@@ -20,6 +20,18 @@ public class MemberService {
 
     //회원가입
     public Long join(Member member){
+
+        long start = System.currentTimeMillis();
+
+        try{
+            validateDuplicateMember(member);//함수 추출
+            memberRepository.save(member);
+            return member.getId();
+        }finally{
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join= "+timeMs +"ms");
+        }
         //중복체크 *같은 이름 등록 불가
         // if(memberRepository.findByName(member.getName())!=null) findByName으로 Optional로 나오니까 null로 비교불가
         /*클린코드로 바꾸면
@@ -27,9 +39,7 @@ public class MemberService {
         result.ifPresent( m -> { //m이 member, 존재하는지만 확인하고 실행문에 사용되지않으므로 걍 m이라 써서 존재확인만 함
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         });*/
-        validateDuplicateMember(member);//함수 추출
-        memberRepository.save(member);
-        return member.getId();
+
     }
 
     private void validateDuplicateMember(Member member) {
