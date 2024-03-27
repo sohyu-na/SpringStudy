@@ -9,7 +9,6 @@ import javax.persistence.Id;
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) //db가 id 생성
     private Long id; //system이 저장하는 id
-
     private String name;
 
     public Long getId() {
